@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "pflannery.vscode-versionlens",
+    "ms-azuretools.vscode-docker",
+    "dbaeumer.vscode-eslint",
+    "lokalise.i18n-ally",
+    "jasonnutter.search-node-modules"
+  ]
+}

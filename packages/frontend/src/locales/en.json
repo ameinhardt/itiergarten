@@ -1,0 +1,59 @@
+{
+  "updatePrompt": {
+    "newContent": "New content available, click on @:refresh button to update.",
+    "offlineReady": "Ready for offline usage"
+  },
+  "pages": {
+    "helloWorld": {
+      "exampleFor": "Example for",
+      "greeting": "Hello",
+      "givenName": "what's your name?",
+      "countIs": "count is",
+      "loaded": "Loaded {when}",
+      "fetchUserinfo": "Fetch userinfo",
+      "response": "Received response code {0}",
+      "themeDark": "dark",
+      "themeLight": "light",
+      "helloWs": "hello ws"
+    },
+    "home": {
+      "title": "Home"
+    },
+    "disclosure": {
+      "title": "Disclosure",
+      "download": "Download source of all used dependencies",
+      "thirdPartyLibs": "Third party libraries"
+    },
+    "notFound": {
+      "title": "Not found"
+    },
+    "profile": {
+      "title": "Your profile",
+      "deleteAccount": "Delete account",
+      "yesBye": "Yes, bye!",
+      "givenName": "Your name",
+      "updateError": "{0} could not be updated",
+      "confirmation": "Do you really want to delete your account?",
+      "id": "ID",
+      "iss": "Issuer",
+      "createdAt": "Created at",
+      "email": "Email",
+      "name": "Name",
+      "roles": "Roles",
+      "updatedAt": "Updated at"
+    },
+    "docs": {
+      "title": "Documentation"
+    },
+    "privacyStatement": {
+      "title": "Data Privacy Statement"
+    }
+  },
+  "signIn": "Sign In with {0}",
+  "signOut": "Sign Out",
+  "close": "Close",
+  "cancel": "Cancel",
+  "refresh": "Refresh",
+  "search": "Search",
+  "save": "Save"
+}

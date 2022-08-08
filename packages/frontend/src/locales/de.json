@@ -1,0 +1,60 @@
+{
+  "updatePrompt": {
+    "newContent": "Neuer Inhalt ist verfügbar. Klicke auf den @:refresh Knopf für ein Update",
+    "offlineReady": "Bereit für die Offline-Nutzung"
+  },
+  "pages": {
+    "helloWorld": {
+      "exampleFor": "Beispiel für",
+      "greeting": "Hallo",
+      "givenName": "wie heißt du?",
+      "countIs": "Der Zähler beträgt",
+      "loaded": "@.capitalize:pages.helloWorld._loaded geladen",
+      "_loaded": "{when}",
+      "fetchUserinfo": "Benutzerinfo abrufen",
+      "response": "Antwortcode {0} erhalten",
+      "themeLight": "hell",
+      "themeDark": "dunkel",
+      "helloWs": "hallo Ws"
+    },
+    "home": {
+      "title": "Überblick"
+    },
+    "disclosure": {
+      "title": "Bekanntmachungen",
+      "download": "Sourcecode aller genutzer Abhängigkeiten runterladen",
+      "thirdPartyLibs": "Bibliotheken von Drittanbietern"
+    },
+    "notFound": {
+      "title": "Nicht gefunden"
+    },
+    "profile": {
+      "title": "Dein Profil",
+      "deleteAccount": "Konto löschen",
+      "yesBye": "Ja, tschüss!",
+      "givenName": "Dein Name",
+      "updateError": "Fehler beim updaten von {0}",
+      "confirmation": "Möchtest du dein Konto wirklich löschen?",
+      "id": "ID",
+      "iss": "Aussteller",
+      "createdAt": "Erstellt am",
+      "email": "E-Mail",
+      "name": "Name",
+      "roles": "Rollen",
+      "updatedAt": "Aktualisiert am"
+    },
+    "docs": {
+      "title": "Dokumentation"
+    },
+    "privacyStatement": {
+      "title": "Datenschutzerklärung"
+    }
+  },
+  "close": "Schließen",
+  "cancel": "Abbrechen",
+  "signIn": "Mit {0} anmelden",
+  "signOut": "Abmelden",
+  "refresh": "Aktualisieren",
+  "search": "Suche",
+  "save": "Speichern"
+}

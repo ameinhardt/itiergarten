@@ -1,0 +1,14 @@
+node_modules*
+dist/
+.npmrc
+.nyc_output/
+coverage/
+*.code-workspace
+**/logs/
+.env**.local
+.rollup.cache
+docker
+globalConfig.json
+.idea
+*.iml
+.DS_Store

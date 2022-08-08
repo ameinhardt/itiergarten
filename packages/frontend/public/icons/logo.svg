@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+ <g stroke-linecap="round">
+  <path d="m60.755 16.516-42-4.34e-4" color="#000000" fill="#058b8c" stroke-linejoin="round" stroke-width="8" style="-inkscape-stroke:none"/>
+  <path d="m18.755 12.516c-2.2092 1.32e-4 -3.9999 1.7911-3.9998 4.0003 1.32e-4 2.209 1.7908 3.9996 3.9998 3.9998h46v-8z" color="#000000" fill="#fa7473" stroke-linejoin="round" style="-inkscape-stroke:none"/>
+  <circle cx="64.755" cy="37.516" r="20" fill="none" stroke="#058b8c" stroke-linejoin="bevel" stroke-width="10"/>
+ </g>
+ <path d="m31.255 24.516 9.7e-5 38" fill="#058b8c" stroke="#fa7473" stroke-linejoin="bevel" stroke-width="8"/>
+ <path d="m85.755 103.52c-10-20-37.5-33-57.5-33h73" fill="none" stroke="#058b8c" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"/>
+ <circle cx="64.755" cy="37.516" r="10" fill="#fa7473"/>
+ <path d="m64.755 16.516-42-4.34e-4" color="#000000" fill="#058b8c" stroke-linejoin="round" stroke-width="8" style="-inkscape-stroke:none"/>
+ <path d="m85.755 33.517c-2.2089 1.35e-4 -3.9996 1.7908-3.9998 3.9998v27.5h8v-27.5c-1.35e-4 -2.2092-1.7911-3.9999-4.0003-3.9998zm-3.9998 42.5v27.5c1.38e-4 2.209 1.7908 3.9996 3.9998 3.9998 2.2091 1.5e-4 4.0001-1.7906 4.0003-3.9998v-27.5z" color="#000000" fill="#058b8c" stroke-linecap="round" stroke-linejoin="round" style="-inkscape-stroke:none"/>
+</svg>

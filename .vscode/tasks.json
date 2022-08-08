@@ -1,0 +1,93 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build docker itiergarten/server",
+      "type": "shell",
+      "command": "docker",
+      "group": "build",
+      "args": [
+        "build", "--rm", "-t", "itiergarten/server:latest", "."
+      ],
+      "windows": {
+        "args": [
+          "build", "--rm", "-t", "itiergarten/server:latest", "."
+        ]
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run docker itiergarten/server",
+      "type": "shell",
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-it", "-p", "8080:8080/tcp", "--env-file", "./packages/backend/.env.docker", "itiergarten/server:latest"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "build dev - backend",
+      "type": "shell",
+      "command": "npx",
+      "options": {
+        "cwd": "packages/backend/",
+        "env": {
+          "NODE_ENV": "development"
+        }
+      },
+      "args": [
+        "tsc", "-b", "--incremental", "."
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "npm: dev - frontend",
+      "type": "npm",
+      "script": "dev",
+      "path": "packages/frontend/",
+      "isBackground": true,
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": ".",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "^\\s*vite.*",
+            "endsPattern": "^\\s*ready in \\d+ms\\."
+          }
+        }
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "npm",
+      "script": "bootstrap",
+      "problemMatcher": [],
+      "label": "npm: bootstrap"
+    }
+  ]
+}

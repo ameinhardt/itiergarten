@@ -1,0 +1,152 @@
+/*
+@font-face {
+  font-family: FF Mark Pro;
+  font-style: normal;
+  font-weight: 400;
+  src: url(./fonts/FF-Mark-Pro-Regular.woff) format("woff")
+}
+
+@font-face {
+  font-family: FF Mark Pro;
+  font-style: normal;
+  font-weight: 600;
+  src: url(./fonts/FF-Mark-Pro-Medium.woff) format("woff")
+}
+
+@font-face {
+  font-family: FF Mark Pro;
+  font-style: normal;
+  font-weight: 700;
+  src: url(./fonts/FF-Mark-Pro-Bold.woff) format("woff")
+}
+*/
+
+// https://fonts.googleapis.com/css2?family=Roboto&display=swap
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/fonts/Roboto.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  @apply bg-gray-light dark:bg-gray-500
+}
+
+html, body {
+  @apply font-sans h-full m-0 overflow-hidden antialiased overscroll-y-contain;
+}
+
+.base {
+	&-bg {
+		@apply bg-blue-50 dark:bg-gray-800;
+    &-highlight {
+      @apply bg-white dark:bg-gray-700;
+    }
+	}
+  &-text {
+    @apply text-gray-700 dark:text-white;
+  }
+  &-divide > :not([hidden]) ~ :not([hidden]),
+  &-border {
+    @apply border-gray-300 dark:border-gray-500;
+  }
+	&-backdrop {
+		@apply fixed w-full h-full top-0 backdrop-filter backdrop-blur-sm backdrop-brightness-75 dark:backdrop-brightness-125 backdrop-opacity-75 backdrop-saturate-75;
+	}
+  &-shadow {
+    --tw-shadow: 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12), 0px 11px 15px -7px rgba(0, 0, 0, 0.2);
+    --tw-shadow-colored: 0px 24px 38px 3px var(--tw-shadow-color), 0px 9px 46px 8px var(--tw-shadow-color), 0px 11px 15px -7px var(--tw-shadow-color);
+    -webkit-box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+  }
+  &-disabled {
+    @apply text-gray-500 cursor-not-allowed;
+  }
+}
+
+.btn {
+	@apply
+		inline-flex flex-shrink-0
+		cursor-pointer select-none
+		flex-wrap items-center justify-center
+		border-none rounded
+		text-center text-sm uppercase
+		px-4 min-h-[2.25rem] m-1
+		bg-primary text-white
+		active:bg-secondary-orange;
+	line-height: 1em;
+
+  &.disabled {
+    @apply text-gray-500 dark:text-gray-600 cursor-not-allowed;
+  }
+  &.disabled:not(.outline) {
+    @apply bg-gray-300 dark:bg-gray-400;
+  }
+	&.outline {
+    $colors: primary, success, warning, danger, error, info;
+    @each $color in $colors {
+      &.#{$color} {
+        @apply min-h-[none] bg-transparent ring;
+      }
+      &.#{$color}:not(.disabled) {
+        @apply text-#{$color} ring-#{$color} hover:bg-#{$color}/20 hover:ring-#{$color}/80 active:bg-#{$color}/40;
+      }
+    }
+  }
+  &-circle {
+    @apply h-12 w-12 rounded-1/2 p-0 text-primary flex flex-shrink-0 items-center justify-center hover:ring hover:ring-primary;
+  }
+}
+
+.toggle {
+  @apply h-7 w-13 cursor-pointer appearance-none bg-white duration-300 ease-in-out rounded-3xl;
+  transition: background, box-shadow 0.2s ease-in-out;
+  box-shadow: -1.5rem 0 0 2px theme('colors.gray.500') inset, 0 0 0 2px theme('colors.gray.500') inset;
+  &:checked,
+  &[checked="true"] {
+    box-shadow: 1.5rem 0 0 2px theme('colors.primary') inset, 0 0 0 2px theme('colors.primary') inset;
+  }
+  &:disabled, &.disabled {
+    @apply cursor-not-allowed dark:bg-gray-500;
+    box-shadow: 1.5rem 0 0 2px theme('colors.gray.300') inset, 0 0 0 2px theme('colors.gray.300') inset;
+    @at-root {
+      .dark & {
+        box-shadow: 1.5rem 0 0 2px theme('colors.gray.500') inset, 0 0 0 2px theme('colors.gray.500') inset;
+      }
+    }
+  }
+  &:indeterminate {
+    box-shadow: 0.75rem 0 0 2px theme('colors.gray.500') inset, -0.75rem 0 0 2px theme('colors.gray.500') inset, 0 0 0 2px theme('colors.gray.300') inset;
+  }
+}
+
+.skeleton {
+	@apply relative overflow-hidden block;
+
+  &::after {
+		@apply absolute top-0 right-0 bottom-0 left-0 transform -translate-x-full;
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0.1) 20%,
+      rgba(255, 255, 255, 0.2) 60%,
+      rgba(255, 255, 255, 0)
+    );
+    content: '';
+		animation: shimmer 1s infinite;
+		@keyframes shimmer {
+			to {
+				transform: translateX(100%);
+			}
+		}
+  }
+}

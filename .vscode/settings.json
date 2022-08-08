@@ -1,0 +1,42 @@
+{
+  "files.exclude": {
+    "**/dist": true,
+    "**/coverage": true,
+    "**/.nyc_output": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "eslint.run": "onSave",
+  "eslint.lintTask.enable": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.trimAutoWhitespace": true,
+  "git.alwaysSignOff": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": false,
+    "source.fixAll.eslint": true
+  },
+  "github.gitAuthentication": false,
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "unocss.root": "packages/frontend",
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "html",
+    "vue",
+    "json",
+    "jsonc",
+    "json5"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "i18n-ally.enabledFrameworks": [
+    "vue"
+  ],
+  "i18n-ally.localesPaths": [
+    "packages/frontend/src/locales"
+  ],
+  "i18n-ally.keystyle": "nested"
+}

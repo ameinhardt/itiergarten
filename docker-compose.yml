@@ -1,0 +1,62 @@
+version: '3.6'
+
+services:
+  itiergarten_server:
+    image: ${REGISTRY_HOST}itiergarten/server:${IMAGE_TAG:-latest}
+    container_name: "itiergarten-server"
+    restart: always
+    # init: true
+    healthcheck:
+      test: ["CMD", "node", "index", "-c"]
+      interval: 10s
+      timeout: 3s
+      # start_period: 5s
+      retries: 3
+    build:
+      context: .
+      args:
+        HTTP_PROXY: ${HTTP_PROXY}
+        HTTPS_PROXY: ${HTTPS_PROXY}
+        http_proxy: ${HTTP_PROXY}
+        https_proxy: ${HTTPS_PROXY}
+      # network: cntlm
+    ports:
+      - 8080:8080
+    #  - 9229:9229
+    # command: node --inspect-brk=0.0.0.0:9229 cli
+    volumes:
+       - ./docker/logs:/app/logs
+    env_file: ./packages/backend/.env.docker
+    # environment:
+      # NODE_EXTRA_CA_CERTS: /app/certs/fullchain.pem # in case of https, should get the servers full cert chain for healthcheck
+
+  itiergarten_keycloak:
+    image: "quay.io/keycloak/keycloak:16.1.0"
+    container_name: "itiergarten-keycloak"
+    ports:
+      - 8080:8080
+    volumes:
+      - ./docker/keycloak:/opt/jboss/keycloak/standalone/data/
+    environment:
+      KEYCLOAK_USER: "admin"
+      KEYCLOAK_PASSWORD: "admin"
+
+  itiergarten_mongo:
+    image: "mongo"
+    container_name: "itiergarten-mongo"
+    restart: always
+    ports:
+      - '27017-27019:27017-27019'
+    volumes:
+      - ./docker/mongo:/data/db
+    healthcheck:
+      test: test $$(echo "rs.initiate().ok || rs.status().ok" | mongo --quiet) -eq 1
+      interval: 10s
+      start_period: 10s
+    environment:
+      MONGO_REPLICA_SET_NAME: ${MONGO_REPLICA_SET_NAME:-rs0}
+    command: ["--replSet", "${MONGO_REPLICA_SET_NAME:-rs0}", "--bind_ip_all"]
+
+networks:
+  default:
+    # name: cntlm

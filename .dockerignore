@@ -1,0 +1,9 @@
+**
+!/packages/backend/dist
+!/packages/backend/index.js
+!/packages/backend/LICENSE.txt
+!/packages/backend/package.json
+!/packages/frontend/dist
+!/package.json
+!/pnpm-lock.yaml
+!/pnpm-workspace.yaml
