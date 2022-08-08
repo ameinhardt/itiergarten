@@ -3,7 +3,7 @@ import { Session } from '../../models/Session';
 
 const SessionSchema = new Schema<Session>({
   sess: Object,
-  updatedAt: {
+  _ts: {
     default: new Date(),
     expires: 2 * 60, // 2min for login only
     type: Date

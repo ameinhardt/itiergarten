@@ -1,6 +1,6 @@
 # ITiergarten monorepo
 
-This is a setup for a basic javascript backend/frontend project. It can be used as a itiergarten for quickly building simple applications.
+This is a setup for a basic javascript backend/frontend project. It can be used as a playground for quickly building simple applications.
 
 ## Stack
 * General: [pnpm](https://pnpm.io), [typescript](https://www.typescriptlang.org), [eslint]('https://eslint.org)

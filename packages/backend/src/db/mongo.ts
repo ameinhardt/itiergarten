@@ -8,15 +8,19 @@ export default async function init(MONGO_CONNECTION = process.env.MONGO_CONNECTI
   }
 
   logger.debug('connecting to mongodb');
-  const mongoose = await connect(MONGO_CONNECTION);
+  const mongoose = await connect(MONGO_CONNECTION),
+    collection = mongoose.connection.collection('sessions');
   /* istanbul ignore next: db errors not covered */
   mongoose.connection.on('error', (error) => {
     logger.error(`mongodb error: ${error}`);
   });
   for (const event of ['connected', 'reconnected', 'disconnected', 'reconnectFailed', 'reconnectTries']) {
-    mongoose.connection.on(event, () => logger.info(`mongodb ${event}`))
-    ;
+    mongoose.connection.on(event, () => logger.info(`mongodb ${event}`));
   }
+  await collection.createIndex(
+    { _ts: 1 },
+    { expireAfterSeconds: 2 * 60, background: true }
+  );
   logger.info('mongodb connected');
   return mongoose.connection;
 }
