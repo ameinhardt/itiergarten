@@ -45,7 +45,10 @@
             v-for="(link, key) in generalLinks"
             :key="key"
           >
-            <a :href="link">{{ key }}</a>
+            <a
+              target="_blank"
+              :href="link"
+            >{{ key }}</a>
           </template>
         </li>
         <li>
@@ -54,7 +57,10 @@
             v-for="(link, key) in frontendLinks"
             :key="key"
           >
-            <a :href="link">{{ key }}</a>
+            <a
+              target="_blank"
+              :href="link"
+            >{{ key }}</a>
           </template>
         </li>
         <li>
@@ -63,7 +69,10 @@
             v-for="(link, key) in backendLinks"
             :key="key"
           >
-            <a :href="link">{{ key }}</a>
+            <a
+              target="_blank"
+              :href="link"
+            >{{ key }}</a>
           </template>
         </li>
         <li>
@@ -72,7 +81,10 @@
             v-for="(link, key) in testingLinks"
             :key="key"
           >
-            <a :href="link">{{ key }}</a>
+            <a
+              target="_blank"
+              :href="link"
+            >{{ key }}</a>
           </template>
         </li>
         <li>
@@ -81,7 +93,10 @@
             v-for="(link, key) in developmentEnvironment"
             :key="key"
           >
-            <a :href="link">{{ key }}</a>
+            <a
+              target="_blank"
+              :href="link"
+            >{{ key }}</a>
           </template>
         </li>
       </ul>

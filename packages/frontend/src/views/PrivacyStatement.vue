@@ -59,7 +59,11 @@
                 <b>Technisch notwendige Cookies</b><br>
                 Ohne diese Cookies kann die technische Bereitstellung dieser Website nicht gewährleistet werden. Hierunter
                 fallen z.B. Cookies, die die Daten der Anmeldung speichern. Sie werden beim Ausloggen oder Schließen des
-                Browsers gelöscht.
+                Browsers gelöscht.<br>
+                @itiergarten/backend-jwt/-auth: Beinhaltet Anmeldeinformationen für die backend services. Wird beim Ausloggen gelöscht.<br>
+                ARRAffinity / ARRAffinitySameSite: Wird von Webseiten gesetzt, die auf der Microsoft Azure-Cloud-Plattform
+                laufen. Es wird für den Auslastungsausgleich verwendet, um sicherzustellen, dass die Seitenanfragen der
+                Besucher in jeder Browser-Sitzung an denselben Server geleitet werden.
               </li>
             </ul>
           </li>
@@ -152,7 +156,10 @@
       <p>
         Sie haben das Recht auf Beschwerde bei einer Aufsichtsbehörde, insbesondere in dem Mitgliedstaat ihres
         gewöhnlichen Aufenthaltsorts, Ihres Arbeitsplatzes oder des Orts des mutmaßlichen Verstoßes (Art. 77 DSGVO).
-        Zuständigen Aufsichtsbehörde ist der <a href="https://www.datenschutz-berlin.de">Berliner Beauftragte für
+        Zuständigen Aufsichtsbehörde ist der <a
+          target="_blank"
+          href="https://www.datenschutz-berlin.de"
+        >Berliner Beauftragte für
           Datenschutz und Informationsfreiheit</a>.
       </p>
       <h2>Erfrodernis der Bereitstellung der personenbezogenen Daten</h2>
@@ -227,7 +234,12 @@
               <li>
                 <b>Technically required cookies</b><br>
                 Without these cookies, the technical provision of the online service cannot be ensured. These include
-                cookies that save information about your login. They will removed when you log out or close the Browser.
+                cookies that save information about your login. They will removed when you log out or close the
+                Browser.<br>
+                @itiergarten/backend-jwt/-auth: Contains Logininformation for the backend services. It will be removed when you log out.<br>
+                ARRAffinity / ARRAffinitySameSite: Set by websites running on the Microsoft Azure cloud platform. It is
+                used for load balancing to ensure that visitors' page requests are directed to the same server in each
+                browser session
               </li>
             </ul>
           </li>
@@ -277,7 +289,10 @@
           authentication of you by Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland (hereinafter
           „Google“).
           If you successfully login, you already have the relevant information of collection of personal data by Google
-          (also see <a href="https://policies.google.com/terms?hl=en">Terms of Service</a> and <a
+          (also see <a
+            target="_blank"
+            href="https://policies.google.com/terms?hl=en"
+          >Terms of Service</a> and <a
             href="https://policies.google.com/privacy?hl=en"
           >Privacy Policy</a>).
         </li>
@@ -308,7 +323,10 @@
       <p>
         You have the right to lodge a complaint with a supervisory authority, in particular in the Member State of your
         habitual residence, place of work or place of the alleged infringement (Art. 77 GDPR). Responsible supervisory
-        authority in this case is <a href="https://www.datenschutz-berlin.de">Berliner Beauftragte für Datenschutz und
+        authority in this case is <a
+          target="_blank"
+          href="https://www.datenschutz-berlin.de"
+        >Berliner Beauftragte für Datenschutz und
           Informationsfreiheit</a>.
       </p>
       <h2>Obligation to provide the personal data</h2>
