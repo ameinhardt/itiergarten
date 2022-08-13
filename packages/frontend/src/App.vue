@@ -142,8 +142,8 @@ async function init() {
 }
 init();
 
-router.beforeEach(async (to, from, next) => {
-  await (initUser ||= loadUser());
+router.beforeEach(async (to, _, next) => {
+  await (initUser ||= loadUser(to));
   const roles = to.meta.roles as Array<Role> | undefined;
   if (to.meta.roles == null || roles?.some((role) => profile.hasRole(role))) {
     next();

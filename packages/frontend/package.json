@@ -1,7 +1,7 @@
 {
   "name": "@itiergarten/frontend",
   "title": "ITiergarten",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "author": "Axel Meinhardt <axel@itiergarten.de>",
   "scripts": {
