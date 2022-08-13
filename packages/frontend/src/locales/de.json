@@ -48,6 +48,16 @@
     },
     "privacyStatement": {
       "title": "Datenschutzerklärung"
+    },
+    "users": {
+      "title": "Nutzer",
+      "provider": "Identitätsanbieter",
+      "email": "Email",
+      "givenname": "Vorname",
+      "name": "Name",
+      "roles": "Rolen",
+      "createdAt": "Angelegt am",
+      "updatedAt": "Zuletzt geändert am"
     }
   },
   "close": "Schließen",

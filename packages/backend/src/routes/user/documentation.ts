@@ -4,9 +4,6 @@ const base = 'user',
     required: ['createdAt', 'email', 'id', 'name', 'roles', 'updatedAt'],
     additionalProperties: false,
     properties: {
-      accessToken: {
-        type: 'string'
-      },
       createdAt: {
         type: 'string',
         format: 'date-time'
@@ -23,6 +20,12 @@ const base = 'user',
       },
       name: {
         type: 'string'
+      },
+      provider: {
+        type: 'array',
+        items: {
+          type: 'string'
+        }
       },
       roles: {
         type: 'array',
@@ -64,6 +67,47 @@ const base = 'user',
   };
 
 export default {
+  [`/${base}s`]: {
+    get: {
+      tags: [base],
+      summary: 'Get a list of all user',
+      responses: {
+        200: {
+          description: 'List of all user. Paged, ordered',
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['total', 'items'],
+                additionalProperties: false,
+                properties: {
+                  items: {
+                    type: 'array',
+                    items: userSchema
+                  },
+                  total: {
+                    type: 'number'
+                  }
+                }
+              }
+            }
+          }
+        },
+        401: {
+          $ref: '#/components/responses/Unauthorized'
+        },
+        403: {
+          $ref: '#/components/responses/Forbidden'
+        }
+      },
+      security: [
+        {
+          bearerAuth: ['admin'],
+          cookieAuth: ['admin']
+        }
+      ]
+    }
+  },
   [`/${base}`]: {
     get: {
       tags: [base],

@@ -21,8 +21,12 @@ const UserSchema = new Schema<UserModel>(
     timestamps: true,
     toJSON: {
       versionKey: false,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      transform: (_, { _id, provider, ...user }) => ({ id: _id, ...user })
+
+      transform: (_, { _id, provider, ...user }) => ({
+        id: _id,
+        provider: Object.keys(provider),
+        ...user
+      })
     }
   }
 ),

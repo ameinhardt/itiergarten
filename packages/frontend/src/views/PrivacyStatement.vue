@@ -380,7 +380,6 @@ function drawResponsible() {
   if (!responsibleCanvas.value) {
     return;
   }
-  console.log('draw canvas with', responsible.value);
   const context = responsibleCanvas.value.getContext('2d'),
     { font, color } = getComputedStyle(responsibleCanvas.value.previousSibling);
   context.clearRect(0, 0, responsibleCanvas.value.width, responsibleCanvas.value.height);

@@ -3,10 +3,12 @@ import { createPinia } from 'pinia';
 // eslint-disable-next-line import/no-unresolved
 import { registerSW } from 'virtual:pwa-register';
 import { createApp } from 'vue';
-import type { langs } from '@/typings/vue-i18n';
+import { createI18n } from 'vue-i18n';
+import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
-import initI18n, { SUPPORTED_LOCALES } from './i18n';
-import initRouter from './router';
+import { SUPPORTED_LOCALES } from './i18n';
+import routes from './routes';
+import type { langs, MessageSchema } from './typings/vue-i18n';
 // eslint-disable-next-line import/no-unresolved
 import 'uno.css';
 
@@ -46,6 +48,22 @@ axios.interceptors.response.use(
   }
 );
 
-initI18n(navigator.languages.find((lang) => ~SUPPORTED_LOCALES.indexOf(lang as langs)) as langs | undefined)
-  .then((i18n) => createApp(App).use(createPinia()).use(initRouter(i18n)).use(i18n).mount('#app'))
-  .catch((error) => console.error(error));
+const defaultLocale = navigator.languages.find((lang) => ~SUPPORTED_LOCALES.indexOf(lang as langs));
+
+createApp(App)
+  .use(createI18n<MessageSchema, langs, false>({
+    legacy: false,
+    locale: defaultLocale, // but no messages loaded, yet. Really to be defined in App.vue
+    fallbackLocale: defaultLocale,
+    globalInjection: true,
+    missing: import.meta.env.PROD
+      ? (locale, key, instance, values) =>
+          console.warn(`missing '${locale}' translation for '${key}'`, instance, values)
+      : undefined
+  }))
+  .use(createPinia())
+  .use(createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes
+  }))
+  .mount('#app');

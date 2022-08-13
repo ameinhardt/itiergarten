@@ -55,9 +55,14 @@ html, body {
   &-text {
     @apply text-gray-700 dark:text-white;
   }
-  &-divide > :not([hidden]) ~ :not([hidden]),
+  &-divide > :not([hidden]) ~ :not([hidden]) {
+    @apply border-gray-300 dark:border-gray-500;
+  }
   &-border {
     @apply border-gray-300 dark:border-gray-500;
+    &-highlight {
+      @apply bg-white dark:bg-gray-700;
+    }
   }
 	&-backdrop {
 		@apply fixed w-full h-full top-0 backdrop-filter backdrop-blur-sm backdrop-brightness-75 dark:backdrop-brightness-125 backdrop-opacity-75 backdrop-saturate-75;
@@ -92,11 +97,9 @@ html, body {
     @apply bg-gray-300 dark:bg-gray-400;
   }
 	&.outline {
-    $colors: primary, success, warning, danger, error, info;
+    @apply min-h-[none] bg-transparent ring;
+    $colors: primary, secondary, success, warning, danger, error, info;
     @each $color in $colors {
-      &.#{$color} {
-        @apply min-h-[none] bg-transparent ring;
-      }
       &.#{$color}:not(.disabled) {
         @apply text-#{$color} ring-#{$color} hover:bg-#{$color}/20 hover:ring-#{$color}/80 active:bg-#{$color}/40;
       }

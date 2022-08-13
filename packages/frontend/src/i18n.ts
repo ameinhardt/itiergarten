@@ -3,12 +3,11 @@ import dayjs from 'dayjs';
 // eslint-disable-next-line import/no-unresolved
 import locales from 'virtual:locales';
 import { nextTick } from 'vue';
-import { createI18n } from 'vue-i18n';
-import type { I18n } from 'vue-i18n';
-import type { langs, MessageSchema, Composer } from './typings/vue-i18n';
+import { DefineDateTimeFormat } from 'vue-i18n';
+import type { langs, Composer } from './typings/vue-i18n';
 
 const SUPPORTED_LOCALES = Object.keys(locales) as Array<langs>,
-  dateTimeFormat = {
+  dateTimeFormat : DefineDateTimeFormat = {
     dateTime: {
       day: '2-digit',
       month: 'short',
@@ -63,21 +62,4 @@ async function setLocale(composer: Composer, locale = composer.locale.value as l
   return composer;
 }
 
-async function init(defaultLocale: langs = 'en'): Promise<I18n<unknown, unknown, unknown, string, false>> {
-  const i18n = createI18n<[MessageSchema], langs, false>({
-    legacy: false,
-    locale: defaultLocale, // but no messages loaded, yet. Really to be defined in App.vue
-    fallbackLocale: defaultLocale,
-    globalInjection: true,
-    missing: import.meta.env.PROD
-      ? (locale, key, instance, values) =>
-          console.warn(`missing '${locale}' translation for '${key}'`, instance, values)
-      : undefined
-  });
-
-  await setLocale(i18n.global);
-  return i18n;
-}
-
-export default init;
 export { setLocale, SUPPORTED_LOCALES };

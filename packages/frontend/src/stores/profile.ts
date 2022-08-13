@@ -1,12 +1,10 @@
-import { useDark } from '@vueuse/core';
 import axios, { AxiosResponse } from 'axios';
 import { defineStore } from 'pinia';
-import { Ref, watch } from 'vue';
 import { Role, User, UserEditable } from '../models/User';
 
 type RootState = {
-  user?: User;
-  prefersDark: Ref<boolean>;
+  user?: User | null; // can be undefined or explicitely not present
+  prefersDark: boolean;
 };
 
 interface ProfilePatchResponse {
@@ -15,19 +13,6 @@ interface ProfilePatchResponse {
   status?: number;
   details?: User;
 }
-
-const prefersDark = useDark({ storageKey: 'dark' });
-
-watch(
-  prefersDark,
-  () =>
-    document?.head
-      ?.querySelector('meta[name="theme-color"]')
-      ?.setAttribute('content', prefersDark.value ? '#151B23' : '#FAFBFE'),
-  {
-    immediate: true
-  }
-);
 
 const jsonHeader = {
     headers: {
@@ -38,10 +23,10 @@ const jsonHeader = {
     state: () =>
       ({
         user: undefined,
-        prefersDark
+        prefersDark: false
       } as RootState),
     getters: {
-      isLoggedIn: (state) => state.user !== undefined,
+      isLoggedIn: (state) => state.user != null,
       hasRole: (state) => (name: Role) => state.user?.roles?.includes(name) ?? false
     },
     actions: {
@@ -52,7 +37,7 @@ const jsonHeader = {
         try {
           await Promise.all(['api'].map((type) => caches?.delete?.(`${type}-${location.origin}`)));
         } finally {
-          this.user = undefined;
+          this.user = null;
         }
         window.location.href = `${import.meta.env.BASE_URL ?? '/'}api/auth/logout`;
       },
@@ -67,9 +52,9 @@ const jsonHeader = {
         }
       },
       async update(user: UserEditable) {
-        if (this.isLoggedIn) {
+        if (this.user) {
           try {
-            const { data }: AxiosResponse<ProfilePatchResponse> = await axios.patch('/api/user', user);
+            const { data }: AxiosResponse<ProfilePatchResponse> = await axios.patch(`/api/user/${this.user.id}`, user);
             if (data.details) {
               data.details.createdAt = new Date(data.details.createdAt);
               data.details.updatedAt = new Date(data.details.updatedAt);
@@ -77,6 +62,18 @@ const jsonHeader = {
               return true;
             }
           } catch {}
+        }
+        return false;
+      },
+      async delete() {
+        if (this.user) {
+          try {
+            await axios.delete(`/api/user/${this.user.id}`);
+            await Promise.all(['api'].map((type) => caches?.delete?.(`${type}-${location.origin}`)));
+            return true;
+          } finally {
+            this.user = null;
+          }
         }
         return false;
       },

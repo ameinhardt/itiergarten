@@ -74,7 +74,6 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
 import { computed, inject, reactive, ref } from 'vue';
 import { Composer, useI18n } from 'vue-i18n';
 import BasePopover from '../components/BasePopover.vue';
@@ -143,12 +142,8 @@ async function updateProfile() {
 async function deleteProfile() {
   deleting.value = true;
   try {
-    await Promise.all([
-      axios.delete('/api/user') as Promise<any>,
-      ...['api'].map((type) => caches?.delete?.(`${type}-${location.origin}`))
-    ]);
+    await profile.delete();
   } finally {
-    profile.user = undefined;
     deleting.value = false;
   }
   showConfirmation.value = false;

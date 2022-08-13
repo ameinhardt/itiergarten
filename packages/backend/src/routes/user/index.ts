@@ -2,7 +2,7 @@
 import Router from '@koa/router';
 import Ajv from 'ajv';
 import bodyParser from 'koa-bodyparser';
-import { AuthContext, hasRoles, initAuthContext, logout } from '../../auth';
+import { AuthContext, hasRoles, initAuthContext, logout, requiresRoles } from '../../auth';
 import { User } from '../../db';
 import logger from '../../logger';
 import { Role } from '../../models/User';
@@ -20,6 +20,17 @@ const ADMINROLES : Array<Role> | Role = 'admin',
     userPatchSchema: ajv.compile<UserPatch>(userPatchSchema)
   };
 
+function mergeSorting(sortBy?: string | string[], order?: string | string[]) {
+  const orderArray = (!order || Array.isArray(order)) ? order : [order];
+  return (Array.isArray(sortBy)
+    ? sortBy
+    : [sortBy])
+    .map((field, index) =>
+      field && ['id', 'email', 'givenNamen', 'name', 'roles', 'createdAt', 'updatedAt'].includes(field)
+        ? [field, orderArray?.[index] === '-1' ? -1 : 1]
+        : undefined
+    ).filter(Boolean) as Array<[string, 1 | -1]>;
+}
 export default async function init() {
   const router = new Router()
     // .use(cors())
@@ -31,6 +42,25 @@ export default async function init() {
       }),
       initAuthContext()
     )
+    /* get a list of all users. For admins only */
+    .get(`/${base}s`, requiresRoles('admin'), async (context: AuthContext) => {
+      logger.debug('get all users');
+      const { direction, sortBy, pagesize: pagesizeString, order, item } = context.query,
+        pagesize = typeof pagesizeString === 'string' && Number.parseInt(pagesizeString),
+        sortByArray = mergeSorting(sortBy, order),
+        query = User.find({
+          ...((typeof item === 'string') && {
+            [direction === '<' ? '$lt' : '$gt']: item
+          })
+        })
+          .limit((!pagesize || Number.isNaN(pagesize)) ? 12 : pagesize + 2);
+      if (sortByArray.length > 0) {
+        query.sort(Object.fromEntries(sortByArray));
+      }
+
+      context.body = await query;
+    })
+
     /* get general user information. Only admins for retrive for other user */
     .get(`/${base}/:id?`, async (context: AuthContext) => {
       const user = context.state.user,

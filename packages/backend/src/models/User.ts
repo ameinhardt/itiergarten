@@ -6,6 +6,7 @@ interface Provider {
 }
 
 export interface User {
+  id: string;
   provider: Map<string, Provider>;
   email: string;
   givenName?: string;

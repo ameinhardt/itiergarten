@@ -134,7 +134,7 @@ function initStream(wss: WebSocket.Server<SynchedWebSocket>, collection: Collect
         }
       });
 
-    logger.debug('created stream started');
+    logger.debug('change stream started');
   }
 
   wss

@@ -161,11 +161,11 @@ import { Toast } from '../models/Toast';
 import { User } from '../models/User';
 import { useProfileStore } from '../stores/profile';
 import { useWsStore } from '../stores/ws';
-import type { Composer } from '../typings/vue-i18n';
+import type { langs } from '../typings/vue-i18n';
 
 const profile = useProfileStore(),
   newGivenName = ref(profile.user?.givenName ?? profile.user?.name ?? ''),
-  i18n = useI18n({ useScope: 'global' }) as Composer,
+  i18n = useI18n<unknown, langs>({ useScope: 'global' }),
   toast = inject('toast') as (toastCfg: Toast | string) => undefined,
   count = ref(0),
   title = import.meta.env.VITE_TITLE,

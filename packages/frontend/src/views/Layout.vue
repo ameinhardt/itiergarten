@@ -107,6 +107,15 @@
               </router-link>
             </li>
             <li
+              v-if="profile.isLoggedIn && profile.hasRole('admin')"
+              class="menu-item"
+            >
+              <router-link to="/users">
+                <i-mdi-account-multiple class="mr-2" />
+                <span>{{ $t('pages.users.title') }}</span>
+              </router-link>
+            </li>
+            <li
               v-if="profile.isLoggedIn"
               class="menu-item"
             >
@@ -157,9 +166,7 @@
       </template>
       <Profile />
     </BaseModal>
-    <main class="h-full overflow-y-auto overflow-x-hidden p-4">
-      <slot />
-    </main>
+    <slot />
     <footer class="flex items-center justify-center min-h-14 border-t base-border" />
   </div>
 </template>
@@ -183,6 +190,7 @@ const profile = useProfileStore(),
 onClickOutside(toolbarMenuReference, () => (toolbarMenu.value = false), {
   ignore: [toolbarMenuTrigger]
 });
+
 watch(
   () => profile.isLoggedIn,
   (isLoggedInNow, isLoggedInBefore) => {
@@ -198,7 +206,7 @@ watch(
     @apply hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer;
   }
   .signInWithGoogle {
-    @apply min-h-10.5 flex items-center justify-start rounded-sm p-[1px] font-roboto;
+    @apply light:border min-h-10.5 flex items-center justify-start rounded-sm p-[1px] font-roboto;
     background: white;
     @at-root {
       .dark & {

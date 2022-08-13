@@ -47,6 +47,16 @@
     },
     "privacyStatement": {
       "title": "Data Privacy Statement"
+    },
+    "users": {
+      "title": "Users",
+      "provider": "Identity Providers",
+      "email": "Email",
+      "givenname": "Given Name",
+      "name": "Name",
+      "roles": "Roles",
+      "createdAt": "Created at",
+      "updatedAt": "Last updated"
     }
   },
   "signIn": "Sign In with {0}",
