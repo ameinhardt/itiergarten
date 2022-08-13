@@ -48,13 +48,13 @@ axios.interceptors.response.use(
   }
 );
 
-const defaultLocale = navigator.languages.find((lang) => ~SUPPORTED_LOCALES.indexOf(lang as langs));
+const fallbackLocale = navigator.languages.find((lang) => ~SUPPORTED_LOCALES.indexOf(lang.split('-')[0] as langs)) ?? 'en';
 
 createApp(App)
   .use(createI18n<MessageSchema, langs, false>({
     legacy: false,
-    locale: defaultLocale, // but no messages loaded, yet. Really to be defined in App.vue
-    fallbackLocale: defaultLocale,
+    locale: fallbackLocale, // but no messages loaded, yet. Really to be defined in App.vue
+    fallbackLocale,
     globalInjection: true,
     missing: import.meta.env.PROD
       ? (locale, key, instance, values) =>
