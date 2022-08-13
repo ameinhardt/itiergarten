@@ -48,7 +48,7 @@ axios.interceptors.response.use(
   }
 );
 
-const fallbackLocale = navigator.languages.find((lang) => ~SUPPORTED_LOCALES.indexOf(lang.split('-')[0] as langs)) ?? 'en';
+const fallbackLocale = navigator.languages.map((lang) => lang.split('-')[0] as langs).find((lang) => ~SUPPORTED_LOCALES.indexOf(lang)) ?? 'en';
 
 createApp(App)
   .use(createI18n<MessageSchema, langs, false>({
