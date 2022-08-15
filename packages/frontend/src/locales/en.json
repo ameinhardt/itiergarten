@@ -1,6 +1,6 @@
 {
   "updatePrompt": {
-    "newContent": "New content available, click on @:refresh button to update.",
+    "newContent": "A new version is available, click on @:refresh button to update.",
     "offlineReady": "Ready for offline usage"
   },
   "pages": {

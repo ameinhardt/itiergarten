@@ -289,6 +289,7 @@ watch(visibility, (now) => (now ? resume() : pause()));
 watch(i18n.locale, updateLoadTime);
 </script>
 
+<!-- eslint-disable max-lines -->
 <style lang="scss">
   .helloWorld {
     ul a {
@@ -297,7 +298,6 @@ watch(i18n.locale, updateLoadTime);
         content: ', ';
       }
     }
-
     li {
       list-style: none;
     }

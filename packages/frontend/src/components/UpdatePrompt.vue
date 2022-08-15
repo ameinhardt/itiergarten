@@ -50,7 +50,8 @@
 import { useRegisterSW } from 'virtual:pwa-register/vue';
 import { reactive, toRefs } from 'vue';
 
-const close = async () => {
+const UPDATEINTERVAL = 5 * 60 * 1000, // 5min
+  close = async () => {
     /* eslint-disable no-use-before-define */
     offlineReady.value = false;
     needRefresh.value = false;
@@ -67,13 +68,11 @@ const close = async () => {
         updateServiceWorker: close
       }
     : useRegisterSW({
-      immediate: true,
       onRegistered(sw) {
         if (sw) {
           setInterval(async () => {
-            console.info('Checking for sw update');
             await sw.update();
-          }, 20_000);
+          }, UPDATEINTERVAL);
         }
       }
     });

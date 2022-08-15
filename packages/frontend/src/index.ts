@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { createPinia } from 'pinia';
-// eslint-disable-next-line import/no-unresolved
-import { registerSW } from 'virtual:pwa-register';
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -16,12 +14,6 @@ import '@unocss/reset/tailwind.css';
 // eslint-disable-next-line import/no-unresolved
 import 'virtual:unocss-devtools';
 import './assets/style.scss';
-
-registerSW({
-  onOfflineReady() {
-    console?.info('ready for offline usage');
-  }
-});
 
 console?.info(
   `%c ${import.meta.env.VITE_TITLE} %c v${import.meta.env.VITE_VERSION} %c `,

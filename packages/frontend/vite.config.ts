@@ -19,7 +19,6 @@ import Components from 'unplugin-vue-components/vite';
 import { defineConfig, loadEnv, Plugin, IndexHtmlTransformResult, ConfigEnv, UserConfig } from 'vite';
 import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
 import packageJson from './package.json';
-import unoconfig from './unocss.config';
 
 const PORT = process.env.PORT ? Number.parseInt(process.env.PORT) : undefined,
   testkey = '../../tests/cert/localhost.key',
@@ -43,7 +42,7 @@ export default defineConfig((config: ConfigEnv) : UserConfig => {
       includeAssets: ['icons/logo.svg', 'icons/favicon=196.png', 'fonts/Roboto.woff2'],
       srcDir: 'sw',
       filename: 'sw.ts',
-      registerType: 'autoUpdate',
+      // registerType: 'autoUpdate',
       strategies: 'injectManifest',
       injectManifest: {
         globPatterns: ['**/*.{png,js,css,html,svg}']
@@ -165,7 +164,7 @@ export default defineConfig((config: ConfigEnv) : UserConfig => {
     },
     base: BASE_URL,
     build: {
-      minify: isProduction,
+      minify: false, // isProduction,
       commonjsOptions: {
         ignoreTryCatch: (id) => !id.includes('swagger-ui')
       }
