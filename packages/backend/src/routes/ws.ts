@@ -1,7 +1,7 @@
 import crypto, { BinaryLike } from 'node:crypto';
 import { Context, DefaultState, Middleware, Next } from 'koa';
 import compose from 'koa-compose';
-import type { ChangeStream, ChangeStreamDocument, ChangeStreamInsertDocument, Collection, Document } from 'mongodb';
+import type { ChangeStream, ChangeStreamInsertDocument, Collection, Document } from 'mongodb';
 import mongoose from 'mongoose';
 import WebSocket, { ServerOptions } from 'ws';
 import { AuthContext, initAuthContext } from '../auth';

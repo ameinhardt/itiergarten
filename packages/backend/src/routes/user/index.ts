@@ -47,7 +47,7 @@ export default async function init() {
         enableTypes: ['json'],
         jsonLimit: '10kb'
       }),
-      initAuthContext()
+      initAuthContext(true) // always retrieve the user from db for this endpoints
     )
     /* get a list of all users. For admins only */
     .get(`/${base}s`, requiresRoles('admin'), async (context: AuthContext) => {

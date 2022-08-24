@@ -65,6 +65,7 @@ const ORIGIN = process.env.ORIGIN,
   JWT_COOKIENAME = `${NAME}-jwt`,
   algorithm = 'RS256',
   secrets: Record<string, string | ((header: jwksRsa.TokenHeader) => Promise<string>)> = {
+    // allow own key directly for our origin
     [ORIGIN]: `-----BEGIN PUBLIC KEY-----\n${AUTH_PUBLICKEY}\n-----END PUBLIC KEY-----`
     /*, 'https://accounts.google.com': jwksRsa.koaJwtSecret({
       requestAgent: HTTPS_PROXY ? HttpsProxyAgent(HTTPS_PROXY) : undefined,
@@ -297,7 +298,11 @@ async function refresh(context: AuthContext) {
   return context.state.token;
 }
 
-function initAuthContext(fetchUser = true, refreshToken?: boolean, checkExpiry = true) {
+/*
+  offer different level of user information processing. Avoid fetching the user if not needed.
+  refreshToken can be forced (true), denied (false) or done if needed (undefined)
+*/
+function initAuthContext(fetchUser = false, refreshToken?: boolean, checkExpiry = true) {
   return compose([jwtMiddleware, async (context: Context, next: Next) => {
     const state = context.state as AuthState;
     context.assert(state.decodedToken != null, 401, context.state.jwtOriginalError);
@@ -305,6 +310,7 @@ function initAuthContext(fetchUser = true, refreshToken?: boolean, checkExpiry =
     const shouldRefresh = refreshToken === true || (refreshToken === undefined && isExpired(state.decodedToken));
     if (fetchUser || shouldRefresh) {
       const user = await User.findById(state.decodedToken.sub);
+      // [`provider.${provider}`]: { sub: authInfo.sub }
       context.assert(user != null, 403);
       state.user = user;
       if (shouldRefresh) {
