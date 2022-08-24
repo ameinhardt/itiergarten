@@ -16,7 +16,7 @@
           {{ i18n.te(`${i18nBase}.${column}`) ? $t(`${i18nBase}.${column}`) : column }}
         </div>
         <div v-if="editable">
-          Action
+          {{ $t('components.table.action') }}
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
           <a
             href="#"
             class="font-medium text-primary"
-          >Edit</a>
+          >{{ $t('components.table.edit') }}</a>
         </div>
       </div>
     </div>

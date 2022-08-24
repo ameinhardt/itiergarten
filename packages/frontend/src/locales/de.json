@@ -66,5 +66,13 @@
   "signOut": "Abmelden",
   "refresh": "Aktualisieren",
   "search": "Suche",
-  "save": "Speichern"
+  "save": "Speichern",
+  "previous": "Vorherige",
+  "next": "Nächste",
+  "components": {
+    "table": {
+      "action": "Aktion",
+      "edit": "Bearbeiten"
+    }
+  }
 }

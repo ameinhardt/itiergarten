@@ -65,5 +65,13 @@
   "cancel": "Cancel",
   "refresh": "Refresh",
   "search": "Search",
-  "save": "Save"
+  "save": "Save",
+  "previous": "Previous",
+  "next": "Next",
+  "components": {
+    "table": {
+      "action": "Action",
+      "edit": "Edit"
+    }
+  }
 }
