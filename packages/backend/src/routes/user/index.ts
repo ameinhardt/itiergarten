@@ -5,31 +5,38 @@ import bodyParser from 'koa-bodyparser';
 import { AuthContext, hasRoles, initAuthContext, logout, requiresRoles } from '../../auth';
 import { User } from '../../db';
 import logger from '../../logger';
-import { Role } from '../../models/User';
+import { User as UserType, Role } from '../../models/User';
 // import Ajv from 'ajv';
 import { base /*, userSchema */, userPatchSchema } from './documentation';
 // import bodyParser from 'koa-bodyparser';
+
+type SortingKeys = keyof UserType | '_id';
 
 interface UserPatch {
   givenName?: string;
 }
 
-const ADMINROLES : Array<Role> | Role = 'admin',
+const DEFAULTPAGESIZE = 10,
+  ADMINROLES : Array<Role> | Role = 'admin',
   ajv = new Ajv(),
   validators = {
     userPatchSchema: ajv.compile<UserPatch>(userPatchSchema)
   };
 
-function mergeSorting(sortBy?: string | string[], order?: string | string[]) {
-  const orderArray = (!order || Array.isArray(order)) ? order : [order];
-  return (Array.isArray(sortBy)
-    ? sortBy
-    : [sortBy])
-    .map((field, index) =>
-      field && ['id', 'email', 'givenNamen', 'name', 'roles', 'createdAt', 'updatedAt'].includes(field)
-        ? [field, orderArray?.[index] === '-1' ? -1 : 1]
+function mergeSorting(sortBy?: string | string[], order?: string | string[], filter = ['id', 'email', 'givenNamen', 'name', 'roles', 'createdAt', 'updatedAt']) : Array<[SortingKeys, 1 | -1]> {
+  const orderArray = (!order || Array.isArray(order)) ? order : [order],
+    mergedSorting = (Array.isArray(sortBy)
+      ? sortBy
+      : [sortBy])
+      .map((field, index) => field && // only sort on these keys
+        filter.includes(field)
+        ? [field === 'id' ? '_id' : field, orderArray?.[index] === '-1' ? -1 : 1]
         : undefined
-    ).filter(Boolean) as Array<[string, 1 | -1]>;
+      ).filter(Boolean);
+  if (mergedSorting.length === 0) {
+    return [['_id', 1]];
+  }
+  return mergedSorting as Array<[SortingKeys, 1 | -1]>;
 }
 export default async function init() {
   const router = new Router()
@@ -45,20 +52,24 @@ export default async function init() {
     /* get a list of all users. For admins only */
     .get(`/${base}s`, requiresRoles('admin'), async (context: AuthContext) => {
       logger.debug('get all users');
-      const { direction, sortBy, pagesize: pagesizeString, order, item } = context.query,
-        pagesize = typeof pagesizeString === 'string' && Number.parseInt(pagesizeString),
+      const { dir: direction, sortBy, pagesize: pagesizeString, order, item } = context.query,
+        pagesize = typeof pagesizeString === 'string' ? Number.parseInt(pagesizeString) : Number.NaN,
         sortByArray = mergeSorting(sortBy, order),
-        query = User.find({
-          ...((typeof item === 'string') && {
-            [direction === '<' ? '$lt' : '$gt']: item
+        primarySortField = sortByArray[0][0],
+        lte = direction === '<',
+        users = await User.find({
+          ...(typeof item === 'string' && item && {
+            [primarySortField]: {
+              [lte ? '$lte' : '$gte']: item
+            }
           })
         })
-          .limit((!pagesize || Number.isNaN(pagesize)) ? 12 : pagesize + 2);
-      if (sortByArray.length > 0) {
-        query.sort(Object.fromEntries(sortByArray));
+          .limit((Number.isNaN(pagesize) ? DEFAULTPAGESIZE : pagesize) + (item ? 2 : 1))
+          .sort(Object.fromEntries(lte ? sortByArray.map(([field, reverse]) => [field, reverse === 1 ? -1 : 1]) : sortByArray));
+      if (item != null && users[0]?.[primarySortField].toString() !== item) {
+        users.pop();
       }
-
-      context.body = await query;
+      context.body = lte ? users.reverse() : users;
     })
 
     /* get general user information. Only admins for retrive for other user */

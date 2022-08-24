@@ -9,20 +9,20 @@
   </div>
   <nav class="flex justify-between items-center pt-4">
     <router-link
-      v-if="direction === '<' ? (datas.length > pagesize + (route.query.item ? 1 : 0)) : (route.query.item != null)"
-      :to="getQuery({ sortBy, dir: '<', item: from, pagesize: pagesize === DEFAULTPAGESIZE ? null : pagesize })"
+      v-if="hasLeft"
+      :to="getQuery({ dir: '<', item: from })"
     >
       <div class="btn outline primary">
-        <i-mdi-chevron-left /> Previous
+        <i-mdi-chevron-left /> {{ $t('previous') }}
       </div>
     </router-link>
     <router-link
-      v-if="direction === '>' ? (datas.length > pagesize + (route.query.item ? 1 : 0)) : (route.query.item != null)"
-      :to="getQuery({ sortBy, dir: '>', item: to, pagesize: pagesize === DEFAULTPAGESIZE ? null : pagesize })"
+      v-if="hasRight"
+      :to="getQuery({ dir: '>', item: to })"
       class="ml-auto"
     >
       <div class="btn outline primary">
-        Next <i-mdi-chevron-right />
+        {{ $t('next') }} <i-mdi-chevron-right />
       </div>
     </router-link>
   </nav>
@@ -39,14 +39,20 @@ import { getQuery } from '../utils';
 const DEFAULTPAGESIZE = 10,
   route = useRoute(),
   i18n = useI18n(),
-  pagesize = ref(10),
-  sortBy = ref('id'),
-  direction = computed(() => (route.query.dir && ['<', '>'].includes(route.query.dir.toString())) ? route.query.dir : '>'),
-  columns = ['name', 'givenname', 'roles', 'email', 'provider', 'createdAt', 'updatedAt'],
+
+  columns = new Set(['name', 'givenName', 'roles', 'email', 'provider', 'createdAt', 'updatedAt'] as Array<keyof User>),
+  proxyParameters = ['pagesize', 'sortBy', 'dir', 'item', 'order'],
+
+  pagesize = computed(() => {
+    const firstArgument = Array.isArray(route.query.pagesize) ? route.query.pagesize[0] : route.query.pagesize,
+      size = firstArgument ? Number.parseInt(firstArgument) : Number.NaN;
+    return Number.isNaN(size) ? DEFAULTPAGESIZE : size;
+  }),
+  lte = computed(() => route.query.dir  === '<'),
   datas = ref([] as Array<User>),
   rows = computed(() => {
-    const cutleft = (direction.value === '>' ? route.query.item : (datas.value.length > pagesize.value + 1)) ? 1 : 0,
-      cutright = (direction.value === '>' ? (datas.value.length > pagesize.value + cutleft) : route.query.item) ? -1 : undefined;
+    const cutleft = (lte.value ? (datas.value.length > pagesize.value + 1) : datas.value[0]?.id === route.query.item) ? 1 : 0,
+      cutright = (lte.value ? (datas.value[datas.value.length - 1]?.id === route.query.item) : (datas.value.length > pagesize.value + cutleft)) ? -1 : undefined;
     return datas.value.map((data) => [
       data.name,
       data.givenName,
@@ -57,15 +63,31 @@ const DEFAULTPAGESIZE = 10,
       i18n.d(data.updatedAt, 'dateTime')
     ]).slice(cutleft, cutright);
   }),
-  from = computed(() => datas.value[1]?.id ?? null),
-  to = computed(() => datas.value[datas.value.length - 2]?.id ?? null),
-  proxyParameters = ['pagesize', 'sortBy', 'dir', 'item'];
+  hasLeft = computed(() => lte.value ? (datas.value.length > pagesize.value + (route.query.item != null ? 1 : 0)) : (route.query.item != null)),
+  hasRight = computed(() => !lte.value ? (datas.value.length > pagesize.value + (route.query.item != null ? 1 : 0)) : (route.query.item != null)),
+  primarySortField = computed(() => {
+    const sortField = (Array.isArray(route.query.sortBy) ? route.query.sortBy[0] : route.query.sortBy) as null | keyof User;
+    return (sortField && columns.has(sortField)) ? sortField : 'id';
+  }),
+  from = computed(() => datas.value[1]?.[primarySortField.value] ?? null),
+  to = computed(() => datas.value[datas.value.length - 2]?.[primarySortField.value] ?? null);
 
 // sample data
 watch(() => proxyParameters.map((parameter) => route.query[parameter]), async () => {
   try {
     const { data } = await axios.get<User[]>('/api/users', {
-      params: Object.fromEntries(proxyParameters.map((parameter) => [parameter, route.query[parameter]]))
+      params: Object.fromEntries(proxyParameters
+        .filter((parameter) => Object.prototype.hasOwnProperty.call(route.query, parameter))
+        .map((parameter) => [parameter, route.query[parameter]])
+      ),
+      paramsSerializer: (parameters) => {
+        const urlSearchParameters = new URLSearchParams();
+        for (const key in parameters) {
+          const values = Array.isArray(parameters[key]) ? parameters[key] : [parameters[key]];
+          values.map((value:string) => urlSearchParameters.append(key, value ?? ''));
+        }
+        return urlSearchParameters.toString();
+      }
     });
     datas.value = data;
   } catch {}
@@ -75,7 +97,7 @@ watch(() => proxyParameters.map((parameter) => route.query[parameter]), async ()
     item = Number.isNaN(itemInt) ? undefined : itemInt,
     base = item == null ? -1 : item;
   for (let r = 0; r < pagesize.value + 2; r++) {
-    const id = direction.value === '>' ? base + r : base - pagesize.value + r - 1,
+    const id = lte.value ? base - pagesize.value + r - 1 : base + r,
       user = {
         id: id.toString(),
         name: `John ${id}`,
@@ -89,10 +111,10 @@ watch(() => proxyParameters.map((parameter) => route.query[parameter]), async ()
     newDatas.push(user);
   }
   if (item == null) {
-    if (direction.value === '>') {
-      newDatas.shift();
-    } else {
+    if (lte.value) {
       newDatas.pop();
+    } else {
+      newDatas.shift();
     }
   }
   */
