@@ -69,10 +69,9 @@ const DEFAULTPAGESIZE = 10,
     const sortField = (Array.isArray(route.query.sortBy) ? route.query.sortBy[0] : route.query.sortBy) as null | keyof User;
     return (sortField && columns.has(sortField)) ? sortField : 'id';
   }),
-  from = computed(() => datas.value[1]?.[primarySortField.value] ?? null),
-  to = computed(() => datas.value[datas.value.length - 2]?.[primarySortField.value] ?? null);
+  from = computed(() => datas.value[1]?.[primarySortField.value]?.toString() ?? null),
+  to = computed(() => datas.value[datas.value.length - 2]?.[primarySortField.value]?.toString() ?? null);
 
-// sample data
 watch(() => proxyParameters.map((parameter) => route.query[parameter]), async () => {
   try {
     const { data } = await axios.get<User[]>('/api/users', {
@@ -91,7 +90,7 @@ watch(() => proxyParameters.map((parameter) => route.query[parameter]), async ()
     });
     datas.value = data;
   } catch {}
-  /*
+  /* // sample data
     newDatas = [],
     itemInt = Number.parseInt((Array.isArray(newArguments[3]) ? newArguments[3][0] : newArguments[3]) || ''),
     item = Number.isNaN(itemInt) ? undefined : itemInt,
